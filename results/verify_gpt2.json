@@ -1,0 +1,77 @@
+{
+  "model": "gpt2 (124M), fp32, CPU",
+  "torch": "2.15.0+cpu",
+  "prompts": 8,
+  "max_abs_logit_diff": 9.1552734375e-05,
+  "max_abs_logit_diff_random_1024_tokens": 7.62939453125e-05,
+  "top1_agreement": "68/68",
+  "greedy_tokens_per_prompt": 40,
+  "greedy_identical_all": true,
+  "rows": [
+    {
+      "prompt": "The capital of France is",
+      "max_abs_logit_diff": 4.57763671875e-05,
+      "greedy_identical_cache": true,
+      "greedy_identical_nocache": true,
+      "first_divergence": null,
+      "completion": " the capital of the French Republic, and the capital of the French Republic is the capital of the French Republic.\n\nThe French Republic is the capital of the French Republic.\n\nThe French Republic"
+    },
+    {
+      "prompt": "In 1905, Albert Einstein published",
+      "max_abs_logit_diff": 5.340576171875e-05,
+      "greedy_identical_cache": true,
+      "greedy_identical_nocache": true,
+      "first_divergence": null,
+      "completion": " his first paper on the subject. He wrote that the universe is a \"super-dimensional\" and that the universe is \"a very large, very complex, very complex, very complex, very complex"
+    },
+    {
+      "prompt": "def fibonacci(n):\n    ",
+      "max_abs_logit_diff": 9.1552734375e-05,
+      "greedy_identical_cache": true,
+      "greedy_identical_nocache": true,
+      "first_divergence": null,
+      "completion": "                                        "
+    },
+    {
+      "prompt": "Once upon a time, there was a little girl who",
+      "max_abs_logit_diff": 6.866455078125e-05,
+      "greedy_identical_cache": true,
+      "greedy_identical_nocache": true,
+      "first_divergence": null,
+      "completion": " was a little girl. She was a little girl. She was a little girl. She was a little girl. She was a little girl. She was a little girl. She was a little girl"
+    },
+    {
+      "prompt": "The patient was admitted with chest pain and",
+      "max_abs_logit_diff": 6.103515625e-05,
+      "greedy_identical_cache": true,
+      "greedy_identical_nocache": true,
+      "first_divergence": null,
+      "completion": " was admitted to the hospital with a chest pain of at least 10 cm. The patient was admitted to the hospital with a chest pain of at least 10 cm.\n\nThe patient was admitted to the"
+    },
+    {
+      "prompt": "Transformers use self-attention to",
+      "max_abs_logit_diff": 4.57763671875e-05,
+      "greedy_identical_cache": true,
+      "greedy_identical_nocache": true,
+      "first_divergence": null,
+      "completion": " avoid being distracted by the other player's actions.\n\nThe player can also use the \"self-attention\" ability to avoid being distracted by the other player's actions. The player can also"
+    },
+    {
+      "prompt": "1, 2, 3, 4, 5,",
+      "max_abs_logit_diff": 7.05718994140625e-05,
+      "greedy_identical_cache": true,
+      "greedy_identical_nocache": true,
+      "first_divergence": null,
+      "completion": " 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25,"
+    },
+    {
+      "prompt": "To be, or not to be,",
+      "max_abs_logit_diff": 6.103515625e-05,
+      "greedy_identical_cache": true,
+      "greedy_identical_nocache": true,
+      "first_divergence": null,
+      "completion": " a member of the Church of Jesus Christ of Latter-day Saints, I am not a member of the Church of Jesus Christ of Latter-day Saints. I am not a member of the Church of"
+    }
+  ],
+  "measured": "2026-11-17"
+}
