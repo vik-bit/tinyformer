@@ -35,7 +35,7 @@ i7-1255U laptop (no GPU), PyTorch 2.15 CPU, fp32.
 
 | Component | Reference | How | Result |
 |---|---|---|---|
-| BPE encoder | tiktoken `gpt2` | load GPT-2's 50,257 ranks into this encoder; encode the 2.26 MB TinyStories val split | **identical token ids** (565,918… see [tokenizer.json](results/tokenizer.json)); exact-match test in CI |
+| BPE encoder | tiktoken `gpt2` | load GPT-2's 50,257 ranks into this encoder; encode the 2.26 MB TinyStories val split | **identical token ids**, all 554,025 of them ([tokenizer.json](results/tokenizer.json)); exact-match test in CI |
 | Decoder LM | HF `GPT2LMHeadModel` (gpt2, 124M) | convert weights (split fused QKV, transpose Conv1D); 8 prompts, plus 1024 random tokens to use every position | max \|Δlogit\| **9.2e-5** (prompts), 7.6e-5 (1024 tokens); top-1 68/68; greedy 40-token continuations **identical on 8/8**, with and without KV cache — [verify_gpt2.json](results/verify_gpt2.json) |
 | ViT | timm `vit_base_patch16_224.augreg2_in21k_ft_in1k` | 8 Flickr8k photos through timm's own preprocessing | max \|Δlogit\| **1.2e-5**, max \|Δprob\| 6.3e-7, top-1 8/8 (8 different classes) — [verify_vit.json](results/verify_vit.json) |
 | CLIP | HF `openai/clip-vit-base-patch32` | 16 Flickr8k photos × their 80 captions, HF processor | image embeds **3.3e-6**, text embeds **2.4e-6**, logits 2.7e-5 (at logit scale 100); best caption 16/16 — [verify_clip.json](results/verify_clip.json) |
@@ -70,8 +70,8 @@ split ([tokenizer.json](results/tokenizer.json), [`scripts/tokenizer_compare.py`
 
 Trained on this domain, an 8k vocabulary compresses the held-out stories slightly better than GPT-2's
 general-purpose 50k vocabulary. Training uses incremental pair counts and a lazy max-heap, so the
-cost is mostly the regex pre-tokenisation. Encoding is pure Python at about 1.2 MB/s, roughly 30×
-slower than tiktoken's Rust.
+cost is mostly the regex pre-tokenisation. Encoding is pure Python with a per-chunk cache: 0.7–1.6 MB/s, against
+5.0 MB/s for tiktoken in the same single-call measurement (one run each, so treat it as rough).
 
 ### LM ablations on CPU (TinyStories, 2 seeds each)
 
@@ -157,7 +157,7 @@ resamples), so they cover query sampling, not training variance ([retrieval.json
   temperature. It ran 20 epochs (920 steps, 75 min on CPU, 1 seed). R@10 of 8.9% is about 9× chance
   but far below pretrained. Contrastive learning from 6,000 images is badly data-starved: CLIP
   was trained on 400M pairs. The learnable temperature barely moved in 920 steps (0.0700 →
-  0.0708). Validation R@10 was still rising slowly (8.3% at epoch 14, 8.7% at 17�20) as the cosine LR decayed, so a longer run would probably help a little ([clip_scratch_log.jsonl](results/clip_scratch_log.jsonl)).
+  0.0708). Validation R@10 was still rising slowly (8.3% at epoch 14, 8.7% at 17–20) as the cosine LR decayed, so a longer run would probably help a little ([clip_scratch_log.jsonl](results/clip_scratch_log.jsonl)).
 - **vecdex vs exact:** on 1,000 vectors, HNSW at ef=64 returns exactly the brute-force top-10 for
   93.8% (pretrained) and 99.96% (scratch) of queries. Set overlap is 99.3% / 100%, and recall@K
   differs by at most 0.2 points. At this size exact search is also fast (0.8 s for all 5,000 queries
