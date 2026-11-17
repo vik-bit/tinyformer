@@ -22,7 +22,7 @@ loaded with GPT-2's ranks. Text-to-image search runs on
 |---|---|
 | **What I built** | `tinyformer/model.py` (349 lines): multi-head attention written out as softmax(QKᵀ/√d)V, causal or bidirectional, with RoPE or learned positions, LayerNorm or RMSNorm, GELU / tanh-GELU / QuickGELU / SwiGLU MLPs, grouped-query attention, a KV cache and weight tying. The same `Block`/`Trunk` builds `GPT`, `ViT` and `CLIP`. `tinyformer/tokenizer.py`: byte-level BPE training and encoding. |
 | **Verified against** | Hugging Face GPT-2 small (logits within **9.2e-5**, 8/8 greedy generations identical), timm ViT-B/16 (logits within **1.2e-5** on real photos), Hugging Face CLIP ViT-B/32 (embeddings within **3.3e-6**), tiktoken GPT-2 (**identical ids** on 2.26 MB of text). [Details ↓](#what-is-verified-against-what) |
-| **Trained** | 1.3M-parameter TinyStories LMs on a laptop CPU, 5 configs × 2 seeds (RoPE beats learned positions by 0.16 nats; GQA costs 0.009 nats, which is within seed noise). A 1.2M-parameter ViT on CIFAR-10. A 4M-parameter CLIP trained from scratch on Flickr8k. |
+| **Trained** | 1.3M-parameter TinyStories LMs on a laptop CPU, 5 configs × 2 seeds (RoPE beats learned positions by 0.16 nats; GQA costs 0.009 nats, which is within seed noise). A 1.2M-parameter ViT on CIFAR-10 (74.5% test accuracy, 15 epochs). A 4M-parameter CLIP trained from scratch on Flickr8k. |
 | **Retrieval** | Flickr8k text→image with vecdex: pretrained CLIP ViT-B/32 running in this code gets **R@1 53.7 / R@5 80.6 / R@10 88.7**. The from-scratch CLIP gets 1.2 / 5.0 / 8.9. vecdex's top-10 equals exact search on 93.8% and 99.96% of queries. |
 | **Not done** | The 10–30M-parameter LM and the longer GPU runs are in [`notebooks/train_t4.ipynb`](notebooks/train_t4.ipynb) but **have not been run**. No numbers here come from them. [Full list ↓](#what-was-not-measured) |
 
@@ -70,8 +70,8 @@ split ([tokenizer.json](results/tokenizer.json), [`scripts/tokenizer_compare.py`
 
 Trained on this domain, an 8k vocabulary compresses the held-out stories slightly better than GPT-2's
 general-purpose 50k vocabulary. Training uses incremental pair counts and a lazy max-heap, so the
-cost is mostly the regex pre-tokenisation. Encoding is pure Python with a per-chunk cache: 0.7–1.6 MB/s, against
-5.0 MB/s for tiktoken in the same single-call measurement (one run each, so treat it as rough).
+cost is mostly the regex pre-tokenisation. Encoding is pure Python with a per-chunk cache: 0.7–1.8 MB/s, against
+5.0–7.1 MB/s for tiktoken in the same single-call measurement (two runs; rough, on a shared CPU).
 
 ### LM ablations on CPU (TinyStories, 2 seeds each)
 
@@ -132,7 +132,16 @@ Patch 4 (64 patches + CLS), d 128, 6 layers, 4 heads, **1.21M params**. Random-c
 smoothing 0.1, AdamW, cosine LR, batch 128, 15 epochs, 1 seed. Accuracy is on the full 10,000-image
 test set ([`scripts/train_vit_cifar.py`](scripts/train_vit_cifar.py)).
 
-CIFAR_RESULTS
+| epoch | 1 | 3 | 5 | 8 | 10 | 12 | 14 | 15 |
+|---|---|---|---|---|---|---|---|---|
+| train loss | 1.908 | 1.502 | 1.370 | 1.235 | 1.153 | 1.089 | 1.052 | 1.041 |
+| test accuracy | 43.9% | 56.7% | 61.9% | 68.6% | 71.4% | 73.6% | 74.5% | **74.5%** |
+
+Final test accuracy is **74.52%** (best is also 74.52%, at epochs 14 and 15). This is one seed, so I
+give no confidence interval across seeds. At n=10,000 the binomial standard error on the test
+estimate alone is about ±0.4 pt. Accuracy was still rising when the cosine schedule reached zero, so
+a longer run would likely do better. Each epoch took about 11 minutes on a shared laptop CPU (4
+threads), 2.9 h in total. The per-epoch log is in [`results/vit_cifar_log.jsonl`](results/vit_cifar_log.jsonl).
 
 ### CLIP and Flickr8k text→image retrieval
 
