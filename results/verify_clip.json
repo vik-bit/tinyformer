@@ -1,0 +1,11 @@
+{
+  "model": "openai/clip-vit-base-patch32",
+  "inputs": "16 Flickr8k test images x 80 captions (HF CLIPProcessor)",
+  "max_abs_diff_image_embed": 3.337860107421875e-06,
+  "max_abs_diff_text_embed": 2.384185791015625e-06,
+  "max_abs_diff_logits_per_image": 2.6702880859375e-05,
+  "argmax_caption_agreement": "16/16",
+  "logit_scale": 100.00000762939453,
+  "torch": "2.15.0+cpu",
+  "measured": "2026-11-17"
+}

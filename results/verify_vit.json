@@ -1,0 +1,25 @@
+{
+  "model": "vit_base_patch16_224.augreg2_in21k_ft_in1k",
+  "params": 86567656,
+  "inputs": "8 images from data/sample_images",
+  "max_abs_logit_diff": 1.233816146850586e-05,
+  "max_abs_prob_diff": 6.258487701416016e-07,
+  "top1_agreement": "8/8",
+  "top1_ref": [
+    236,
+    156,
+    541,
+    879,
+    560,
+    208,
+    862,
+    242
+  ],
+  "cpu_seconds_batch8": {
+    "timm": 4.172595100000763,
+    "tinyformer": 4.855441800002154
+  },
+  "timm": "1.0.31",
+  "torch": "2.15.0+cpu",
+  "measured": "2026-11-17"
+}

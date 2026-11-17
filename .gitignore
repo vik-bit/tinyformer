@@ -7,3 +7,5 @@ checkpoints/
 *.pt
 *.bin
 *.safetensors
+runs/
+runs_ablate.log
