@@ -1,0 +1,46 @@
+{
+  "device": "CPU i7-1255U, 4 threads, fp32, batch 1",
+  "torch": "2.15.0+cpu",
+  "rows": {
+    "gpt2_124M": [
+      {
+        "prompt": 16,
+        "new_tokens": 64,
+        "s_cache": 3.9375895999983186,
+        "s_nocache": 18.892956100000447,
+        "tok_per_s_cache": 16.253598394313954,
+        "tok_per_s_nocache": 3.3875058863868577,
+        "speedup": 4.7981018895439265
+      },
+      {
+        "prompt": 16,
+        "new_tokens": 256,
+        "s_cache": 16.689992599996913,
+        "s_nocache": 165.66006109999944,
+        "tok_per_s_cache": 15.338532864301412,
+        "tok_per_s_nocache": 1.545333246288419,
+        "speedup": 9.925712076111411
+      },
+      {
+        "prompt": 512,
+        "new_tokens": 128,
+        "s_cache": 10.306105899999238,
+        "s_nocache": 537.8498724000019,
+        "tok_per_s_cache": 12.419821923235764,
+        "tok_per_s_nocache": 0.23798462464783424,
+        "speedup": 52.18749716127424
+      }
+    ],
+    "trained_1.3M": [
+      {
+        "prompt": 8,
+        "new_tokens": 112,
+        "s_cache": 1.7463778000019374,
+        "s_nocache": 2.619838399998116,
+        "tok_per_s_cache": 64.13274378538009,
+        "tok_per_s_nocache": 42.75072844190716,
+        "speedup": 1.5001555791623151
+      }
+    ]
+  }
+}
