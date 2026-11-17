@@ -13,7 +13,7 @@ jobs:
           python-version: ${{ matrix.python }}
       - name: Install (CPU torch)
         run: |
-          pip install torch --index-url https://download.pytorch.org/whl/cpu
+          pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
           pip install -e ".[ref,dev]"
       # tokenizer round-trip + exact tiktoken match, shape/causality/KV-cache/overfit tests,
       # and reference matching (HF GPT-2, timm ViT, HF CLIP) on tiny random configs
