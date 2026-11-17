@@ -22,11 +22,13 @@ def main():
     print(f"train {len(train.encode()):,} bytes, val {vb:,} bytes")
     gpt2 = tiktoken.get_encoding("gpt2")
     t0 = time.perf_counter()
-    n_ref = len(gpt2.encode(val, allowed_special="all"))
+    ref_ids = gpt2.encode(val, allowed_special="all")
+    n_ref = len(ref_ids)
     ref_t = time.perf_counter() - t0
     mine_gpt2 = Tokenizer.from_tiktoken("gpt2")
     t0 = time.perf_counter()
-    n_mine_gpt2 = len(mine_gpt2.encode(val))
+    mine_ids = mine_gpt2.encode(val)
+    n_mine_gpt2 = len(mine_ids)
     mine_gpt2_t = time.perf_counter() - t0
     rows = [{"tokenizer": "tiktoken gpt2 (reference)", "vocab": gpt2.n_vocab, "val_tokens": n_ref,
              "bytes_per_token": vb / n_ref, "encode_MB_per_s": vb / ref_t / 1e6},
@@ -48,7 +50,7 @@ def main():
                      "train_seconds": tt, "encode_MB_per_s": vb / et / 1e6})
         print(rows[-1])
     out = {"corpus": "TinyStoriesV2-GPT4-valid.txt, 90/10 story split", "val_bytes": vb,
-           "same_ids_as_tiktoken": n_mine_gpt2 == n_ref, "rows": rows}
+           "same_ids_as_tiktoken": mine_ids == ref_ids, "rows": rows}
     Path("results").mkdir(exist_ok=True)
     Path("results/tokenizer.json").write_text(json.dumps(out, indent=2))
     for r in rows:
