@@ -1,0 +1,16 @@
+[project]
+name = "tinyformer"
+version = "0.1.0"
+description = "Transformer blocks from scratch in PyTorch for text, vision and text-image retrieval, verified against reference implementations"
+requires-python = ">=3.10"
+dependencies = ["torch>=2.2", "regex", "numpy"]
+
+[project.optional-dependencies]
+ref = ["transformers>=4.40", "tiktoken", "timm>=1.0", "safetensors", "pillow"]
+dev = ["pytest"]
+
+[tool.setuptools]
+packages = ["tinyformer"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
