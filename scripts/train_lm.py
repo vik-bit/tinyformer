@@ -42,6 +42,7 @@ def parse():
     p.add_argument("--seed", type=int, default=0)
     p.add_argument("--threads", type=int, default=0)
     p.add_argument("--device", default="cuda" if torch.cuda.is_available() else "cpu")
+    p.add_argument("--amp", action="store_true", help="fp16 autocast + GradScaler (CUDA only)")
     p.add_argument("--out", required=True)
     return p.parse_args()
 
@@ -87,6 +88,7 @@ def main():
     lr_at = lambda s: args.lr * min(1, (s + 1) / args.warmup) * (  # noqa: E731
         0.1 + 0.9 * 0.5 * (1 + math.cos(math.pi * min(1.0, s / args.steps))))
     gen = torch.Generator().manual_seed(args.seed)
+    scaler = torch.amp.GradScaler("cuda", enabled=args.amp)
     meta = {"args": vars(args), "config": cfg.to_dict(), "params": n_params,
             "train_tokens_available": len(train), "torch": torch.__version__}
     (out / "meta.json").write_text(json.dumps(meta, indent=2))
@@ -106,11 +108,14 @@ def main():
         for g in opt.param_groups:
             g["lr"] = lr_at(step)
         x, y = train.batch(args.batch, args.seq, gen)
-        _, loss = model(x.to(args.device), targets=y.to(args.device))
+        with torch.autocast("cuda", dtype=torch.float16, enabled=args.amp):
+            _, loss = model(x.to(args.device), targets=y.to(args.device))
         opt.zero_grad(set_to_none=True)
-        loss.backward()
+        scaler.scale(loss).backward()
+        scaler.unscale_(opt)
         torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
-        opt.step()
+        scaler.step(opt)
+        scaler.update()
         if step % 50 == 0:
             log.write(json.dumps({"step": step, "train_loss": loss.item()}) + "\n")
     torch.save({"config": cfg.to_dict(), "model": model.state_dict(), "vocab": args.vocab}, out / "model.pt")
