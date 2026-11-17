@@ -8,14 +8,14 @@
       "vocab": 50257,
       "val_tokens": 554025,
       "bytes_per_token": 4.071303641532422,
-      "encode_MB_per_s": 5.012462244356026
+      "encode_MB_per_s": 7.078367773245894
     },
     {
       "tokenizer": "tinyformer encoder + GPT-2 ranks",
       "vocab": 50257,
       "val_tokens": 554025,
       "bytes_per_token": 4.071303641532422,
-      "encode_MB_per_s": 1.5266883341944468
+      "encode_MB_per_s": 1.8073246034499995
     },
     {
       "tokenizer": "tinyformer BPE trained on TinyStories",
@@ -23,8 +23,8 @@
       "val_tokens": 926917,
       "train_tokens": 8308017,
       "bytes_per_token": 2.4334476549680284,
-      "train_seconds": 12.513011399998504,
-      "encode_MB_per_s": 1.1975158650931454
+      "train_seconds": 11.743220799999108,
+      "encode_MB_per_s": 1.295645338911973
     },
     {
       "tokenizer": "tinyformer BPE trained on TinyStories",
@@ -32,8 +32,8 @@
       "val_tokens": 707042,
       "train_tokens": 6331181,
       "bytes_per_token": 3.190198036325989,
-      "train_seconds": 13.65158589999919,
-      "encode_MB_per_s": 1.1835807894003245
+      "train_seconds": 14.000725499998225,
+      "encode_MB_per_s": 1.0901755186237005
     },
     {
       "tokenizer": "tinyformer BPE trained on TinyStories",
@@ -41,8 +41,8 @@
       "val_tokens": 611594,
       "train_tokens": 5470654,
       "bytes_per_token": 3.6880741145269575,
-      "train_seconds": 12.56756630000018,
-      "encode_MB_per_s": 1.3901007328225126
+      "train_seconds": 12.512842899999669,
+      "encode_MB_per_s": 1.2561964581735972
     },
     {
       "tokenizer": "tinyformer BPE trained on TinyStories",
@@ -50,8 +50,8 @@
       "val_tokens": 565918,
       "train_tokens": 5064025,
       "bytes_per_token": 3.985743517612092,
-      "train_seconds": 17.922662900000432,
-      "encode_MB_per_s": 0.7030027476776137
+      "train_seconds": 12.662418500000058,
+      "encode_MB_per_s": 1.242002311652978
     },
     {
       "tokenizer": "tinyformer BPE trained on TinyStories",
@@ -59,8 +59,8 @@
       "val_tokens": 548762,
       "train_tokens": 4917864,
       "bytes_per_token": 4.110350206464734,
-      "train_seconds": 13.473567499997444,
-      "encode_MB_per_s": 1.5972907006566723
+      "train_seconds": 12.460858499998722,
+      "encode_MB_per_s": 1.5526238822119363
     }
   ]
 }
